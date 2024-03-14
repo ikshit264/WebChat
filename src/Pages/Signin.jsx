@@ -22,12 +22,9 @@ const Signin = () => {
               />
               <button
                 type="button"
-                onClick={() => {
-                  alert("Registration Successful");
-                }}
                 className="bg-blue-500 m-2 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
               >
-                Submit
+                Sign In
               </button>
             </div>
             <div className="already text-sm text-zinc-500">You don't have an account? <Link to="/"  className="italic text-blue-600">Register</Link></div>

@@ -33,7 +33,7 @@ const Login = () => {
               }}
               className="bg-blue-500 m-2 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
             >
-              Submit
+              Log In
             </button>
           </div>
           <div className="already text-sm text-zinc-500">You already have an account? <Link to="/signin" className=" italic text-blue-600">Login</Link></div>
