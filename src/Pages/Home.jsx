@@ -27,9 +27,11 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="Flex ">
+    <div className=" bg-[#342F2F]">
       <Chats />
-      <Input/>
+      <div>
+        <Input />
+      </div>
     </div>
   );
 };

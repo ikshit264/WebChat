@@ -13,49 +13,56 @@ import { UniqueId } from "./UniqueID";
 const Input = () => {
   const [Message, setMessage] = useState("");
   const [Error, setError] = useState(null);
+  const uid = localStorage.getItem("role");
   async function handleSubmit() {
-    console.log(Message);
-    const uid = localStorage.getItem("role")
     const userDoc = await getDoc(doc(db, "users", uid));
+    console.log(Message);
     if (userDoc.exists()) {
       const userData = userDoc.data();
       setError("");
 
       const docRef = doc(db, "LiveChat", UniqueId);
-      if (Message !=  "") {
-      await updateDoc(docRef, {
-        messages: arrayUnion({
-          text: Message,
-          senderId: userData.uid,
-          Name: userData.Name,
-          date: Timestamp.now(),
-        }),
-      });
-    }
-      // console.log(userData)
+      if (Message != "") {
+        await updateDoc(docRef, {
+          messages: arrayUnion({
+            text: Message,
+            senderId: userData.uid,
+            Name: userData.Name,
+            date: Timestamp.now(),
+          }),
+        });
+      }
+      setMessage("");
     } else {
       setError("User document not found for UID: " + uid);
     }
   }
 
   return (
-    <div className=" sticky">
-      <div className="flex flex-col justify-between items-center gap-2">
-        <input
-          onChange={(e) => setMessage(e.target.value)}
-          type="text"
-          value={Message}
-          placeholder="Type a Message"
-          className="w-full px-3 border-b-2 py-2"
-        />
-        <button
-          type="button"
-          onClick={handleSubmit} // Call handleSubmit when button is clicked
-          className="bg-blue-500 m-2 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
-        >
-          Submit
-        </button>
-        {Error}
+    <div className="flex justify-center">
+      <div className="my-3 bottom-0 fixed  justify-center mx-3 bg-[#625D5D] rounded-md">
+        <div className="flex items-center gap-2 border px-3 py-1 rounded-md">
+          <div className="w-full">
+            <input
+              onChange={(e) => setMessage(e.target.value)}
+              type="text"
+              value={Message}
+              placeholder="Type a Message"
+              className="w-full text-md px-3 border-b-2 border-black py-2 md:w-[400px] rounded-md"
+              style={{
+                boxShadow: "rgba(0, 0, 0, 0.2) 0px 0px 6px",
+              }}
+            />
+          </div>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="bg-green-500 m-2 text-md hover:bg-green-600 text-white font-medium rounded-lg text-sm p-1.5 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            Send
+          </button>
+          {Error}
+        </div>
       </div>
     </div>
   );
