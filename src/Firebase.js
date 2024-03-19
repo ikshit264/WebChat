@@ -10,15 +10,16 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCD-4uIQFOBPZloMOcEeQY9T9PT7usWrag",
-  authDomain: "chat-fc929.firebaseapp.com",
-  projectId: "chat-fc929",
-  storageBucket: "chat-fc929.appspot.com",
-  messagingSenderId: "231442396020",
-  appId: "1:231442396020:web:7a8125dc67aa7dbc84f221",
-  measurementId: "G-4DC9FLXY15"
+  apiKey: "AIzaSyDQaXkd628GVuGVQ3D-10aZbtkz-IS-OIw",
+  authDomain: "grpchat-e7c15.firebaseapp.com",
+  projectId: "grpchat-e7c15",
+  storageBucket: "grpchat-e7c15.appspot.com",
+  messagingSenderId: "199328258185",
+  appId: "1:199328258185:web:23b200f7c799ebcba88e58",
+  measurementId: "G-1MLL9JT6X1"
 };
 
+// Initialize Firebase
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

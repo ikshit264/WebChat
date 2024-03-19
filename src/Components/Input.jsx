@@ -1,26 +1,61 @@
-import React from "react";
-import { TfiClip } from "react-icons/tfi";
-import { CiImageOn } from "react-icons/ci";
+import {
+  Timestamp,
+  arrayUnion,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import React, { useState, useContext } from "react";
+import { db } from "../Firebase";
+import { UniqueId } from "./UniqueID";
 
 const Input = () => {
-  const iconsize = 24;
+  const [Message, setMessage] = useState("");
+  const [Error, setError] = useState(null);
+  async function handleSubmit() {
+    console.log(Message);
+    const uid = localStorage.getItem("role")
+    const userDoc = await getDoc(doc(db, "users", uid));
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      setError("");
+
+      const docRef = doc(db, "LiveChat", UniqueId);
+      if (Message !=  "") {
+      await updateDoc(docRef, {
+        messages: arrayUnion({
+          text: Message,
+          senderId: userData.uid,
+          Name: userData.Name,
+          date: Timestamp.now(),
+        }),
+      });
+    }
+      // console.log(userData)
+    } else {
+      setError("User document not found for UID: " + uid);
+    }
+  }
 
   return (
-    <div className=" h-14 bg-white p-4 border-t-2 border  flex justify-between rounded-br-md">
-      <div>
-        <input type="text" placeholder="Type Something..."/>
-      </div>
-      <div className="flex items-center gap-2">
-        <TfiClip size={iconsize} />
-        <CiImageOn size={iconsize} />
-        <div>
-          <button
-            type="button"
-            className="bg-blue-400 hover:bg-blue-500 text-white font-medium rounded-lg text-sm p-2"
-          >
-            Send
-          </button>
-        </div>
+    <div className=" sticky">
+      <div className="flex flex-col justify-between items-center gap-2">
+        <input
+          onChange={(e) => setMessage(e.target.value)}
+          type="text"
+          value={Message}
+          placeholder="Type a Message"
+          className="w-full px-3 border-b-2 py-2"
+        />
+        <button
+          type="button"
+          onClick={handleSubmit} // Call handleSubmit when button is clicked
+          className="bg-blue-500 m-2 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-medium rounded-lg text-sm px-5 py-2.5"
+        >
+          Submit
+        </button>
+        {Error}
       </div>
     </div>
   );

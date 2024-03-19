@@ -1,24 +1,41 @@
-import React from 'react'
-import Photo from "../Images/photo.jpeg";
+import React, { useEffect, useState } from 'react';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../Firebase';
+import { UniqueId } from './UniqueID';
+import Message from './Message';
 
 const Chats = () => {
-  return (
-    <div>
-      <div className="flex flex-col min-w-full p-2">
-      <div className="flex items-center justify-start p-1">
-        <img
-          src={Photo}
-          alt="User"
-          className="h-14 w-14 mx-3 rounded-full object-cover"
-        />
-        <div className="text-md font-medium">
-          <div>Ikshit</div>
-          <div className='text-sm font-normal'>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
-        </div>
-      </div>
-    </div>
-    </div>
-  )
-}
+    const [messages, setMessages] = useState([]);
 
-export default Chats
+    useEffect(() => {
+        const unSub = onSnapshot(doc(db, 'LiveChat', UniqueId), (doc) => {
+            if (doc.exists()) {
+                setMessages(doc.data().messages);
+            } else {
+                console.log('No such document!');
+            }
+        }, (error) => {
+            console.error('Error fetching document: ', error);
+        });
+        return () => {
+            unSub();
+        };
+    }, []);
+
+    return (
+        <div className="w-full">
+            <div className="overflow-y-scroll scroll-smooth bg-scroll "
+                 style={{
+                     height: 'calc(100% - 115px)',
+                     scrollbarWidth: 'thin',
+                     scrollbarColor: '#888 #f1f1f1',
+                 }}>
+                {messages.map((message, index) => (
+                    <Message key={index} message={message} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default Chats;
