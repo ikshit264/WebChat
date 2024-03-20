@@ -31,7 +31,7 @@ const Chats = () => {
   }, [messages]);
 
   return (
-    <div className="w-full mb-20">
+    <div className="w-full py-24">
       <div>
         {messages.map((message, index) => (
           <Message key={index} message={message} />

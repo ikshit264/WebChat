@@ -26,9 +26,9 @@ const Signin = () => {
         const userData = userDoc;
         setError("");
         alert("Registration Success");
+        navigate("/");
         const role = userData._key.path.segments[1];
         localStorage.setItem("role", role);
-        navigate("/");
       } else {
         setError("User document not found for UID: " + uid);
       }
