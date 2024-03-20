@@ -18,33 +18,25 @@ const Signin = () => {
 
   const handleSubmit = async () => {
     if (!Password || !Email) return setError("All fields are required.");
-    else {
-      try {
-        // await signIn(Email, Password);
-        try {
-          const res = await signInWithEmailAndPassword(auth, Email, Password);
-          const uid = res.user.uid;
-          const userDoc = await getDoc(doc(db, "users", uid));
-          if (userDoc.exists()) {
-            const userData = userDoc;
-            setError("");
-            alert("Registration Success");
-            console.log(userData._key.path.segments[1]);
-            const role = userData._key.path.segments[1];
-            localStorage.setItem("role", role);
-            navigate("/");
-          } else {
-            setError("User document not found for UID: " + uid);
-          }
-        } catch (error) {
-          setError("Error signing in: " + error.message);
-        }
-      } catch (error) {
-        setError("An Error Occured", error);
-        console.log(Error);
+    try {
+      const res = await signInWithEmailAndPassword(auth, Email, Password);
+      const uid = res.user.uid;
+      const userDoc = await getDoc(doc(db, "users", uid));
+      if (userDoc.exists()) {
+        const userData = userDoc;
+        setError("");
+        alert("Registration Success");
+        const role = userData._key.path.segments[1];
+        localStorage.setItem("role", role);
+        navigate("/");
+      } else {
+        setError("User document not found for UID: " + uid);
       }
+    } catch (error) {
+      setError("Error signing in: " + error.message);
     }
   };
+  
 
   return (
     <div className="min-h-screen flex justify-center items-center">
